@@ -1,4 +1,3 @@
-<!-- The YAML block below configures the Hugging Face Space; it is harmless on GitHub. -->
 ---
 title: Clinical AI Agent
 emoji: 🩺
