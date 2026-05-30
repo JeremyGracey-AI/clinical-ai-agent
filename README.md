@@ -189,14 +189,23 @@ src/clinical_agent/
 scripts/     smoke_test_fhir.py, build_index.py, run_eval.py
 tests/       fhir_client, retriever, dual_citation, work_iq, assessment,
              engagement, synthetic, metrics, patients   (36 tests)
-app.py       HF Spaces entrypoint (8-tab UI, 3 demo patients)
+app.py       Gradio Space entrypoint (8-tab UI, 3 demo patients)
+web/         carbon-style Docker UI: FastAPI (server.py) + custom-JS dashboard
+Dockerfile   Docker-SDK Space build (ignored by the Gradio Space)
 ```
 
 ---
 
-## Deploy to Hugging Face Spaces
+## Live demos
 
-Push the repo to a Gradio Space; `requirements.txt` and `app.py` are the entrypoint. Add `OPENAI_API_KEY` etc. as Space secrets to enable the live stack.
+Two front-ends over the **same** `run_pipeline()`:
+
+| UI | Stack | Space |
+|---|---|---|
+| **Dashboard** (recommended) | Docker · FastAPI · custom JS — streaming answer, dual-citation chips, Work IQ gauge + radar | [jeremygracey-ai/clinical-ai-agent-ui](https://huggingface.co/spaces/jeremygracey-ai/clinical-ai-agent-ui) |
+| **Gradio** | gradio SDK · 8 tabs | [jeremygracey-ai/clinical-ai-agent](https://huggingface.co/spaces/jeremygracey-ai/clinical-ai-agent) |
+
+**Deploy your own.** Gradio Space: push the repo (`app.py` + `sdk: gradio` README frontmatter). Docker Space: build the root `Dockerfile` (`uvicorn server:app --app-dir web`); config lives in `web/space_readme.md`. Add `ANTHROPIC_API_KEY`/`OPENAI_API_KEY` as Space secrets + set `LLM_PROVIDER` for a live LLM.
 
 ---
 
