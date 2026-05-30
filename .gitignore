@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.env
+.pytest_cache/
+.coverage
+htmlcov/
+data/chroma/*
+!data/chroma/.gitkeep
+data/analytics.jsonl
+data/learner_profile.json
+.DS_Store
