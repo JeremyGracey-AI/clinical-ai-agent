@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clinical AI Agent</title>
+  <meta name="description" content="Patient-grounded, citation-traceable clinical decision support on open standards (SMART on FHIR + transparent RAG)." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🩺</span>
+      <div>
+        <h1>Clinical AI Agent</h1>
+        <p class="tagline">Patient-grounded · citation-traceable · SMART on FHIR · transparent RAG</p>
+      </div>
+    </div>
+    <div class="topbar-meta">
+      <span id="backend-badge" class="badge badge-muted">backend: …</span>
+      <a class="ghost-link" href="https://github.com/JeremyGracey-AI/clinical-ai-agent" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </header>
+
+  <section class="controls">
+    <div class="patient-rail" id="patient-rail" aria-label="Patient selector"></div>
+    <div class="ask">
+      <input id="query" type="text" autocomplete="off"
+             value="How should I manage this patient's diabetes?"
+             placeholder="Ask a clinical question…" />
+      <button id="run-btn" class="primary">Run pipeline</button>
+    </div>
+  </section>
+
+  <main class="grid" id="results" hidden>
+    <!-- LEFT: answer + provenance + conditions + curriculum -->
+    <div class="col-main">
+      <article class="card answer-card">
+        <header class="card-head">
+          <h2>Grounded answer</h2>
+          <div class="answer-flags">
+            <span id="route-badge" class="badge"></span>
+            <span id="confidence-badge" class="badge"></span>
+          </div>
+        </header>
+        <p id="answer-text" class="answer-text"></p>
+
+        <div class="provenance">
+          <div class="prov-col">
+            <h3 class="prov-h prov-patient">Patient data used</h3>
+            <div id="patient-cites" class="chips"></div>
+          </div>
+          <div class="prov-col">
+            <h3 class="prov-h prov-evidence">Evidence</h3>
+            <div id="literature" class="evidence-list"></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <header class="card-head"><h2>Conditions Advisor</h2>
+          <span class="hint">threshold rules vs. live observations</span></header>
+        <div id="conditions" class="condition-grid"></div>
+      </article>
+
+      <article class="card">
+        <div class="tabs">
+          <button class="tab active" data-tab="plan">Study plan</button>
+          <button class="tab" data-tab="assess">Assessment</button>
+        </div>
+        <div id="tab-plan" class="tab-body"></div>
+        <div id="tab-assess" class="tab-body" hidden></div>
+      </article>
+    </div>
+
+    <!-- RIGHT: Work IQ + session + analytics -->
+    <aside class="col-side">
+      <article class="card workiq-card">
+        <header class="card-head"><h2>Clinical Work IQ</h2></header>
+        <div class="gauge-wrap"><div id="gauge"></div></div>
+        <div id="radar" class="radar"></div>
+        <div id="metrics" class="metrics"></div>
+      </article>
+
+      <article class="card">
+        <header class="card-head"><h2>Session</h2></header>
+        <p id="digest" class="digest"></p>
+        <ul id="nudges" class="nudges"></ul>
+      </article>
+
+      <article class="card">
+        <header class="card-head"><h2>Analytics</h2>
+          <span class="hint">Work IQ per run</span></header>
+        <div id="sparkline" class="sparkline"></div>
+      </article>
+    </aside>
+  </main>
+
+  <details class="trace card" id="trace-card" hidden>
+    <summary>Agent trace</summary>
+    <pre id="trace"></pre>
+  </details>
+
+  <footer class="foot">
+    Decision <b>support</b>, not decision making — verify against the cited sources.
+    Synthetic data, illustrative thresholds. ·
+    <a href="https://huggingface.co/spaces/jeremygracey-ai/clinical-ai-agent" target="_blank" rel="noopener">Gradio Space ↗</a>
+  </footer>
+
+  <script src="/static/js/charts.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Web (Docker Space) runtime deps. The clinical_agent package itself is
+# installed via `pip install .` in the Dockerfile (pulls pydantic/httpx).
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+pydantic-settings>=2.2
+httpx>=0.27
+# Optional live LLM — set LLM_PROVIDER=anthropic + ANTHROPIC_API_KEY as a Space secret:
+# anthropic>=0.40
