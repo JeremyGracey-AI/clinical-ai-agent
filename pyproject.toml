@@ -26,6 +26,14 @@ full = [
     "openai>=1.30",
     "anthropic>=0.40",
 ]
+# EXPERIMENTAL quantum-kernel retrieval backend (RETRIEVAL_BACKEND=quantum_kernel).
+# A correctness-equivalent demonstrator, not a speedup — see docs/QUANTUM.md.
+quantum = [
+    "qiskit>=1.0",
+    "qiskit-aer>=0.14",
+    "qiskit-machine-learning>=0.7",
+    "numpy>=1.26",
+]
 dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.5"]
 
 [project.scripts]

@@ -33,6 +33,14 @@ class Settings(BaseSettings):
     embed_model: str = "all-MiniLM-L6-v2"
     use_chroma: bool = False  # persist/retrieve via ChromaDB when True (needs [full])
     chroma_dir: str = "./data/chroma"
+    # Retrieval scoring backend (advances Chroma's `use_chroma` flag with an
+    # explicit selector). Order of precedence in Retriever: quantum_kernel ->
+    # chroma (if use_chroma) -> in-memory cosine. "quantum_kernel" is an
+    # EXPERIMENTAL, correctness-equivalent demonstrator — slower than cosine,
+    # never a speedup. See docs/QUANTUM.md.
+    retrieval_backend: str = "auto"  # auto | cosine | quantum_kernel
+    quantum_qubits: int = 4  # feature-map width for the quantum_kernel backend
+    quantum_shots: int = 0  # 0 = statevector (exact); >0 = sampled fidelity
     corpus_dir: str = "./data/corpus"
     retrieval_top_k: int = 4
     retrieval_min_score: float = Field(default=0.15)
