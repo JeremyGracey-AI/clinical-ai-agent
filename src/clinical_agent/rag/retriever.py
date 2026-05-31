@@ -1,9 +1,12 @@
 """Vector retriever with provenance tagging.
 
-Two backends, same interface:
+Three backends, same ``score(query) -> [(similarity, chunk)]`` interface:
   - in-memory cosine index (offline default) — deterministic, zero deps.
   - ChromaDB persistent collection (set ``USE_CHROMA=true``, needs the [full] extra)
     — we supply our own embeddings, so no model download is triggered.
+  - quantum fidelity kernel (set ``RETRIEVAL_BACKEND=quantum_kernel``, needs the
+    [quantum] extra) — EXPERIMENTAL, correctness-equivalent demonstrator, never a
+    speedup. See docs/QUANTUM.md. Falls back to cosine if Qiskit is missing.
 
 Every hit is returned as a LiteratureCitation so downstream agents always have
 provenance. An optional ``topics`` filter supports hybrid (vector + metadata)
@@ -52,8 +55,15 @@ class Retriever:
         self.settings = get_settings()
         self.embedder = get_embedder()
         self.chunks = SEED_CORPUS + (extra_chunks or [])
-        self._backend: _ChromaBackend | None = None
-        if self.settings.use_chroma:
+        self._backend = None  # any object exposing .score(query)
+        backend = self.settings.retrieval_backend
+        if backend == "quantum_kernel":
+            try:
+                from clinical_agent.rag.quantum_kernel import QuantumKernelBackend
+                self._backend = QuantumKernelBackend(self.chunks, self.embedder, self.settings)
+            except Exception:
+                self._backend = None  # graceful fallback to in-memory cosine
+        if self._backend is None and self.settings.use_chroma:
             try:
                 self._backend = _ChromaBackend(self.chunks, self.embedder, self.settings)
             except Exception:
