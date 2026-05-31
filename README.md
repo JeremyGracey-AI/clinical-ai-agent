@@ -12,6 +12,8 @@ license: apache-2.0
 
 # Clinical AI Agent
 
+[![CI](https://github.com/JeremyGracey-AI/clinical-ai-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/JeremyGracey-AI/clinical-ai-agent/actions/workflows/ci.yml)
+
 **Patient-grounded, citation-traceable clinical decision support on open standards.**
 
 A 5-agent clinical companion that fuses a patient's live **SMART on FHIR** record with cited medical evidence through a **transparent RAG pipeline** — and scores its own faithfulness with a built-in evaluation harness.
